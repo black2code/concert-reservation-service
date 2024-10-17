@@ -1,8 +1,8 @@
 package com.concert.reservation.api;
 
 import com.concert.reservation.application.PaymentService;
-import com.concert.reservation.domain.payment.dto.PaymentRequestDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.concert.reservation.domain.payment.dto.PaymentRequest;
+import com.concert.reservation.domain.payment.dto.PaymentResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,14 +16,13 @@ public class PaymentController {
 
     private final PaymentService paymentService;
 
-    @Autowired
     public PaymentController(PaymentService paymentService) {
         this.paymentService = paymentService;
     }
 
     @PostMapping
-    public ResponseEntity<?> processPayment(@RequestHeader("Authorization") String token,
-        @RequestBody PaymentRequestDto request) {
+    public ResponseEntity<PaymentResponse> processPayment(@RequestHeader("Authorization") String token,
+        @RequestBody PaymentRequest request) {
         return ResponseEntity.ok(paymentService.processPayment(token, request.getReservationId()));
     }
 }

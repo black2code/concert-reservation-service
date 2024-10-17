@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import lombok.Data;
 
 @Data
-public class ReservationRequestDto {
+public class ReservationRequest {
     @NotNull(message = "Concert date cannot be null")
     private LocalDate concertDate;
 

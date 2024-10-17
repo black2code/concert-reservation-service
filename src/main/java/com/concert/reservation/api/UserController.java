@@ -1,8 +1,8 @@
 package com.concert.reservation.api;
 
 import com.concert.reservation.application.UserService;
-import com.concert.reservation.domain.user.dto.BalanceChargeRequestDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.concert.reservation.domain.user.dto.BalanceChargeRequest;
+import com.concert.reservation.domain.user.dto.BalanceResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,19 +17,18 @@ public class UserController {
 
     private final UserService userService;
 
-    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @PostMapping("/balance/charge")
-    public ResponseEntity<?> chargeBalance(@RequestHeader("Authorization") String token,
-        @RequestBody BalanceChargeRequestDto request) {
+    public ResponseEntity<BalanceResponse> chargeBalance(@RequestHeader("Authorization") String token,
+        @RequestBody BalanceChargeRequest request) {
         return ResponseEntity.ok(userService.chargeBalance(token, request.getAmount()));
     }
 
     @GetMapping("/balance")
-    public ResponseEntity<?> getBalance(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<BalanceResponse> getBalance(@RequestHeader("Authorization") String token) {
         return ResponseEntity.ok(userService.getBalance(token));
     }
 }

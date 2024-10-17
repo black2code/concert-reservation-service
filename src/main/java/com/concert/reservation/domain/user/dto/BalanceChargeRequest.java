@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 @Data
-public class BalanceChargeRequestDto {
+public class BalanceChargeRequest {
     @Positive(message = "Amount must be positive")
     private double amount;
 }

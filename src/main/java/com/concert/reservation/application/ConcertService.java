@@ -2,9 +2,10 @@ package com.concert.reservation.application;
 
 import com.concert.reservation.domain.concert.ConcertRepository;
 import com.concert.reservation.domain.seat.SeatRepository;
+import com.concert.reservation.domain.seat.dto.AvailableSeatsResponse;
+import com.concert.reservation.domain.seat.dto.SeatResponse;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,23 +23,16 @@ public class ConcertService {
         this.seatRepository = seatRepository;
     }
 
-    public Map<String, List<String>> getAvailableDates() {
-        List<String> dates = IntStream.range(1, 4)
-            .mapToObj(i -> LocalDate.now().plusDays(i).toString())
+    public List<LocalDate> getAvailableDates() {
+        return IntStream.range(1, 4)
+            .mapToObj(i -> LocalDate.now().plusDays(i))
             .collect(Collectors.toList());
-        return Map.of("availableDates", dates);
     }
 
-    public Map<String, List<Map<String, Object>>> getAvailableSeats(String date) {
-        List<Map<String, Object>> seats = IntStream.range(1, 51)
-            .mapToObj(i -> {
-                Map<String, Object> seat = Map.of(
-                    "seatNumber", Integer.valueOf(i),
-                    "status", "AVAILABLE"
-                );
-                return seat;
-            })
+    public AvailableSeatsResponse getAvailableSeats(LocalDate date) {
+        List<SeatResponse> seats = IntStream.range(1, 51)
+            .mapToObj(i -> new SeatResponse(i, "AVAILABLE"))
             .collect(Collectors.toList());
-        return Map.of("availableSeats", seats);
+        return new AvailableSeatsResponse(seats);
     }
 }

@@ -4,7 +4,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 
 @Data
-public class PaymentRequestDto {
+public class PaymentRequest {
     @NotBlank(message = "Reservation ID cannot be blank")
     private String reservationId;
 }

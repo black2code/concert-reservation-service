@@ -4,7 +4,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 
 @Data
-public class UserRequestDto {
+public class UserRequest {
     @NotBlank(message = "User ID cannot be blank")
     private String userId;
 }

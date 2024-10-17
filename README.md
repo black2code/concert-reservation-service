@@ -1,8 +1,8 @@
 STEP 05
 - 시나리오 :  콘서트 예약 서비스
 
-프로젝트 Milestone
-![img.png](img.png)
+## 프로젝트 Milestone
+![Milestone.png](Milestone.png)
 
 1. 기반 설정
 - 프로젝트 설정 및 환경 구성: 개발 환경 설정, 필요한 라이브러리 설치 등
@@ -25,8 +25,8 @@ STEP 05
 <br>
 <br>
 
-시퀀스 다이어그램
-![img_1.png](img_1.png)
+## 시퀀스 다이어그램
+![Diagram.png](Diagram.png)
 
 1. 로그인 요청
 - 로그인을 요청
@@ -71,3 +71,129 @@ STEP 05
 - Database에서 좌석 예약을 확정 상태로 변경
 - 해당 사용자를 큐에서 제거하도록 요청
 - User에게 최종적으로 예약 완료를 확인
+
+<br>
+
+## 콘서트 예약 서비스 ERD
+![ERD.png](ERD.png)
+
+<br>
+
+## API 명세
+
+## 1. 유저 대기열 토큰 발급 API
+- **URL:** `/api/queue/token`
+- **Method:** POST
+- **Request Body:**
+  ```json
+  {
+    "userId": "string"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "token": "string",
+    "queuePosition": "number",
+    "estimatedWaitTime": "number"
+  }
+  ```
+
+## 2. 예약 가능 날짜/좌석 API
+### 2.1 예약 가능 날짜 조회
+- **URL:** `/api/concerts/available-dates`
+- **Method:** GET
+- **Response:**
+  ```json
+  {
+    "availableDates": ["YYYY-MM-DD"]
+  }
+  ```
+
+### 2.2 예약 가능 좌석 조회
+- **URL:** `/api/concerts/{date}/available-seats`
+- **Method:** GET
+- **Response:**
+  ```json
+  {
+    "availableSeats": [
+      {
+        "seatNumber": "number",
+        "status": "string"
+      }
+    ]
+  }
+  ```
+
+## 3. 좌석 예약 요청 API
+- **URL:** `/api/reservations`
+- **Method:** POST
+- **Request Headers:**
+    - Authorization: Bearer {token}
+- **Request Body:**
+  ```json
+  {
+    "concertDate": "YYYY-MM-DD",
+    "seatNumber": "number"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "reservationId": "string",
+    "expirationTime": "timestamp"
+  }
+  ```
+
+## 4. 잔액 충전/조회 API
+### 4.1 잔액 충전
+- **URL:** `/api/users/balance/charge`
+- **Method:** POST
+- **Request Headers:**
+    - Authorization: Bearer {token}
+- **Request Body:**
+  ```json
+  {
+    "amount": "number"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "userId": "string",
+    "newBalance": "number"
+  }
+  ```
+
+### 4.2 잔액 조회
+- **URL:** `/api/users/balance`
+- **Method:** GET
+- **Request Headers:**
+    - Authorization: Bearer {token}
+- **Response:**
+  ```json
+  {
+    "userId": "string",
+    "balance": "number"
+  }
+  ```
+
+## 5. 결제 API
+- **URL:** `/api/payments`
+- **Method:** POST
+- **Request Headers:**
+    - Authorization: Bearer {token}
+- **Request Body:**
+  ```json
+  {
+    "reservationId": "string"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "paymentId": "string",
+    "status": "string",
+    "amount": "number"
+  }
+  ```
